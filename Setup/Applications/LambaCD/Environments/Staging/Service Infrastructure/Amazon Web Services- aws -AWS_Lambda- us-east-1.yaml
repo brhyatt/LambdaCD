@@ -1,9 +1,0 @@
-harnessApiVersion: '1.0'
-type: AWS_AWS_LAMBDA
-computeProviderName: aws
-computeProviderType: AWS
-deploymentType: AWS_LAMBDA
-infraMappingType: AWS_AWS_LAMBDA
-region: us-east-1
-role: arn:aws:iam::334915631319:role/CodeStarWorker-lambdacd-ToolChain
-serviceName: Lambda
