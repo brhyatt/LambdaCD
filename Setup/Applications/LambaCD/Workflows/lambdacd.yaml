@@ -14,6 +14,31 @@ notificationRules:
   notificationGroupAsExpression: false
   notificationGroups:
   - Account Administrator
+phases:
+- type: AWS_LAMBDA
+  computeProviderName: aws
+  daemonSet: false
+  infraMappingName: Amazon Web Services- aws -AWS_Lambda- us-east-1
+  name: Phase 1
+  phaseSteps:
+  - type: PREPARE_STEPS
+    name: Prepare Steps
+    stepsInParallel: false
+  - type: DEPLOY_AWS_LAMBDA
+    name: Deploy Service
+    steps:
+    - type: AWS_LAMBDA_STATE
+      name: AWS Lambda
+    stepsInParallel: false
+  - type: VERIFY_SERVICE
+    name: Verify Service
+    stepsInParallel: false
+  - type: WRAP_UP
+    name: Wrap Up
+    stepsInParallel: false
+  provisionNodes: false
+  serviceName: Lambda
+  statefulSet: false
 preDeploymentSteps:
 - type: HTTP
   name: Health Check
@@ -29,4 +54,31 @@ preDeploymentSteps:
   - name: Url
   - name: ResponseCode
     value: '200'
+rollbackPhases:
+- type: AWS_LAMBDA
+  computeProviderName: aws
+  daemonSet: false
+  infraMappingName: Amazon Web Services- aws -AWS_Lambda- us-east-1
+  name: Rollback Phase 1
+  phaseNameForRollback: Phase 1
+  phaseSteps:
+  - type: DEPLOY_AWS_LAMBDA
+    name: Deploy Service
+    phaseStepNameForRollback: Deploy Service
+    statusForRollback: SUCCESS
+    steps:
+    - type: AWS_LAMBDA_ROLLBACK
+      name: Rollback AWS Lambda
+    stepsInParallel: false
+  - type: VERIFY_SERVICE
+    name: Verify Service
+    phaseStepNameForRollback: Deploy Service
+    statusForRollback: SUCCESS
+    stepsInParallel: false
+  - type: WRAP_UP
+    name: Wrap Up
+    stepsInParallel: false
+  provisionNodes: false
+  serviceName: Lambda
+  statefulSet: false
 templatized: false
