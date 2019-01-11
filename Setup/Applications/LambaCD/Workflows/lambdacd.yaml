@@ -14,4 +14,19 @@ notificationRules:
   notificationGroupAsExpression: false
   notificationGroups:
   - Account Administrator
+preDeploymentSteps:
+- type: HTTP
+  name: Health Check
+  properties:
+    method: GET
+    socketTimeoutMillis: 0
+    header: 'content-type: application/json'
+    assertion: ${httpResponseCode}==${ResponseCode}
+    executeWithPreviousSteps: false
+    url: ${Url}
+  templateUri: HEROFi/HTTP Verifications/Health Check:latest
+  templateVariables:
+  - name: Url
+  - name: ResponseCode
+    value: '200'
 templatized: false
